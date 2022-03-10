@@ -1,0 +1,88 @@
+$gap: 30px;
+
+$breakpoints: (
+  mobile: 0px,
+  widemobile: 375px,
+  tablet: 720px,
+  desktop: 1160px,
+  mediumdesktop: 1366px,
+  widedesktop: 1440px
+);
+
+$breakpoint-mobile: map-get($breakpoints, mobile);
+$breakpoint-widemobile: map-get($breakpoints, widemobile);
+$breakpoint-tablet: map-get($breakpoints, tablet);
+$breakpoint-desktop: map-get($breakpoints, desktop);
+$breakpoint-mediumdesktop: map-get($breakpoints, mediumdesktop);
+$breakpoint-widedesktop: map-get($breakpoints, widedesktop);
+
+
+@mixin setupGrid() {
+  $columns: 12;
+
+  display: grid;
+  grid-gap: 20px;
+  justify-items: stretch;
+  width: 100%;
+  grid-template: auto / repeat($columns, 1fr);
+
+  &.gap-2h {
+    grid-gap: 40px 20px;
+  }
+
+  @media screen and (min-width: $breakpoint-widemobile) {
+    grid-gap: $gap;
+
+    &.gap-2h {
+      grid-gap: ($gap * 2) $gap;
+    }
+  }
+
+  & > .col {
+    &.grid {
+      display: grid;
+    }
+
+    $i: 1;
+
+    // Mobile (m-x)
+    @while $columns >= $i {
+      &.m-#{$i} {
+          grid-column: span #{$i};
+      }
+
+      $i: $i + 1;
+    }
+
+    // Tablet (t-x)
+    @media screen and (min-width: $breakpoint-tablet) {
+      $i: 1;
+
+      @while $columns >= $i {
+        &.t-#{$i} {
+            grid-column: span #{$i};
+        }
+
+        $i: $i + 1;
+      }
+    }
+
+    // Desktop (d-x)
+    @media screen and (min-width: $breakpoint-desktop) {
+      $i: 1;
+
+      @while $columns >= $i {
+        &.d-#{$i} {
+            grid-column: span #{$i};
+        }
+
+        $i: $i + 1;
+      }
+    }
+  }
+
+}
+
+.grid {
+  @include setupGrid();
+}
